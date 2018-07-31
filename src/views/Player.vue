@@ -23,7 +23,7 @@
           :video-ids="state.videoIds"
           :index="videoIndex" 
           class="slides"
-          :class="{ transparent: playing, unclickable: canClickYouTube }"
+          :class="{ transparent: !showSlides, unclickable: canClickYouTube }"
           @video-id="clickVideoId($event)"
           @translate-x="translateX = $event"
           @slide-change="onSlideChange"
@@ -32,8 +32,8 @@
 
       <transition name="zoof">
           <div class="yt-slides-controls" 
-            v-show="!playing || canClickYouTube"
-            :class="{ clickable: canClickYouTube }"
+            v-show="showControls"
+            :class="{ clickable: firstPlay && canClickYouTube }"
             >
             <div class="yt-slides-prev btn"><i class="material-icons youtube-icon">skip_previous</i></div>
             <div class="btn" @click="gotoHome"><i class="material-icons youtube-icon">home</i></div>
@@ -44,7 +44,7 @@
         </template>
       </YouTubeSlides>
       <transition name="fade">
-        <div class="btn btn-pause" v-show="playing && canClickYouTube" @click="pause">
+        <div class="btn btn-pause" v-show="showPause" @click="pause">
           <i class="material-icons youtube-icon">pause</i>
         </div>
       </transition>
@@ -66,10 +66,20 @@ export default {
       shouldLoadYouTube: false,
       canClickYouTube: true,
       player: null,
-      playing: true
+      playing: true,
+      firstPlay: false
     };
   },
   computed: {
+    showSlides(){
+      return this.firstPlay && !this.playing;
+    },
+    showControls(){
+      return this.firstPlay && (!this.playing || this.canClickYouTube);
+    },
+    showPause(){
+      return this.firstPlay && this.playing && this.canClickYouTube;
+    },
     videoIndex() {
       console.log(
         "videoIndex",
@@ -89,6 +99,7 @@ export default {
     onPlaying() {
       this.canClickYouTube = false;
       this.playing = true;
+      this.firstPlay = true;
     },
     onPaused() {
       // this.$data.canClickYouTube = false;
@@ -117,10 +128,12 @@ export default {
           this.player.loadVideoById({ videoId: id });
         }
         if (this.playing) {
-          this.canClickYouTube = true;
-          setTimeout(() => {
-            this.canClickYouTube = false;
-          }, 1500);
+          if(this.firstPlay) {
+            this.canClickYouTube = true;
+            setTimeout(() => {
+              this.canClickYouTube = false;
+            }, 1500);
+          }
         } else {
           this.player.playVideo();
           this.playing = true;
