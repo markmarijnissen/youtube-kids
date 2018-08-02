@@ -23,7 +23,8 @@ const list = async (
   if (data.items) {
     results.splice.apply(results, [results.length, 0].concat(data.items));
   }
-  if (data.nextPageToken && data.length < maxResults) {
+  console.log(data.nextPageToken, results.length, maxResults);
+  if (data.nextPageToken && results.length < maxResults) {
     return list(method, opts, maxResults, data.nextPageToken, results);
   } else {
     return results;

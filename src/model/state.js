@@ -7,7 +7,7 @@ const state = {
   videoId: null
 };
 
-const playlistIdsStr = localStorage.playlistIds;
+const strIds = localStorage.ids;
 const match = location.hash.match(
   /^#\/([^/]+)(\/([0-9]{1,3})\/([0-9]{1,3}))?$/
 );
@@ -23,8 +23,8 @@ if (match) {
       state.videoId = ids[videoIndex];
     });
   }
-} else if (playlistIdsStr) {
-  // state.playlistIds = playlistIdsStr.split(",");
+} else if (strIds) {
+  state.playlistIds = strIds.split(",");
 }
 
 export default state;

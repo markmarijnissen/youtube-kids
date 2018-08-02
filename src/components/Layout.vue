@@ -65,10 +65,10 @@ export default {
         touchRatio: 1,
         slidesPerView: "auto",
         direction: "vertical",
-        speed: 1200
+        speed: 800
       });
       this.swiper.allowTouchMove = false;
-      this.swiper.on("transitionEnd", () => {
+      this.swiper.on("transitionStart", () => {
         this.scrollable = this.swiper.activeIndex === 0;
         this.swiper.allowTouchMove = this.swiper.activeIndex > 0;
         if (this.swiper.activeIndex === 0) {

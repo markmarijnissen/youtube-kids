@@ -1,23 +1,23 @@
 <template>
     <div class="home">
-      <Grid v-for="playlistId in playlistIds"
+      <YouTubeGrid v-for="playlistId in playlistIds"
         :playlist-id="playlistId"
         v-bind:key="playlistId"
       />
       <div class="settings-footer">
         <a class="settings" @click.prevent="gotoSettings">
-          change playlist
+          add/remove playlists
           </a>
       </div>
     </div>
 </template>
 <script>
-import Grid from "../components/Grid.vue";
+import YouTubeGrid from "../components/YouTubeGrid.vue";
 import state from "../model/state";
 
 export default {
   name: "Home",
-  components: { Grid },
+  components: { YouTubeGrid },
   props: {
     playlistIds: Array
   },

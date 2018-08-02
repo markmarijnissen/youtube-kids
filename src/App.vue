@@ -5,7 +5,7 @@
     <template slot="pages">
       <Settings 
         v-show="showSettings"
-        @update:playlist-id="setPlaylistIds([$event])" 
+        @update:playlist-ids="setPlaylistIds($event)" 
       />
       <Home 
         v-show="!showSettings"
